@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+        <title>JS to to master the Local Storage</title>
+	<style>
+	#form2, #form3{
+	display: none;
+	}
+	
+	form{
+position: relative;
+width: 140px;
+height: 67px;
+margin:50px auto;
+font-family: 'Droid Serif', serif;
+position:relative;
+background-color: white;
+}
+#logInto, #signUp
+{
+font-size: 15px;
+margin-left: 350px;
+border: 1px solid #9e9a0f;
+padding: 5px 15px;
+color: white;
+background-color: red;
+text-shadow: 0px 1px 0px #13506D;
+font-weight: bold;
+border-radius: 2px;
+cursor: pointer;
+width: 15%;
+}
+
+	</style>
+	<!-- Including JS link to support Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+//on clicking the login button, hiding the registration form and displaying the login form
+$("#logInto").click(function(){
+	$("#form3").show();
+	$("#form2").hide();
+	$("#logInto").hide();
+	$("#signUp").hide();
+    $('#logout').hide();
+// validating the input and displaying the user information/error on login
+	$('#login_btn').on("click",function(event){
+        event.preventDefault();
+	// stored data from the register-form
+	    var storedName = localStorage.getItem('Uname');
+        var storedMail = localStorage.getItem('eMail');
+	    var storedPw = localStorage.getItem('Upw');
+    // entered data from the login-form
+    
+	    var userName = $('#userName').val();
+	    var userPw = $('#userPw').val();
+    
+    // check if stored data from register-form is equal to data from login form
+	if((userName == storedName || userName == storedMail) && (userPw == storedPw)) {
+	$('#result').html('login successful. Welcome '+ userName);
+$('#BacktoMain').hide();
+$('#logout').show();
+	    }
+	else {
+	        $('#result').html('invalid credentials. Please try again or go back to Sign Up');
+		$('#BacktoMain').show();
+	    }
+        $('#form3').show();
+        //$('#BacktoMain').hide();
+        
+});
+	//going back to main page after logout
+$('#logout').click(function(event){
+    event.preventDefault();
+    $('#result').html("logged out Successfully");
+    $('#form3').show();
+    $('#userName').val("");
+    $('#userPw').val("");
+    $('#logout').hide();
+});
+});
+// hiding the login page and displaying the sign up page for user to get registered and the value is stored in browser using local storage
+$("#signUp").click(function(){
+	$("#form2").show();
+	$("#form3").hide();
+	$("#logInto").hide();
+	$("#signUp").hide();
+	$('#rgstr_btn').on("click",function(event){
+        event.preventDefault();
+	var nameEntered = $('#Uname').val();
+    var emailEntered = $('#eMail').val();
+	var pwEntered = $('#Upw').val();
+	if ((nameEntered == "") || (pwEntered == "") || (emailEntered == "")) 
+    {
+        $('#reg_res').html("please enter a value to Register");
+    }
+    else
+    {
+        localStorage.setItem('Uname',nameEntered);
+        localStorage.setItem('eMail',emailEntered);
+        localStorage.setItem('Upw',pwEntered); 
+        $('#reg_res').html("registration successful, Please go back to login");
+    }
+	$("#form2").show();
+    $('#Uname').val("");
+    $('#eMail').val("");
+    $('#Upw').val("");
+    
+});	
+});
+
+});
+</script>
+</head>
+
+<body>
+<header> <h1>Assignment 8.2</h1>
+<center><h1> Welcome to Portal </h1></center></header>
+<!-- main container -->
+<div id="container">
+	<!-- registration form -->
+<div id="form2">
+        <form id="register-form" method="post"> 
+            <input type="text" id="Uname"  placeholder="Name"/><br/>
+            <input type="email" name="emailid" id="eMail" placeholder="joe@gmail.com"><br/>
+            <input type="password" id="Upw" placeholder="Password"/><br/>
+            <input type="submit" id="rgstr_btn"  value="Register Details"/> 
+            <input type="submit" id="goBack" value="back"/>
+            <p id="reg_res"></p>
+        </form>
+</div>
+<!-- Login form -->
+<div id="form3">
+        <form id="login-form" method="post" action="#"> 
+            <input type="text"  id="userName"  placeholder="Enter Username" value=""/><br/>
+            <input type="password" id="userPw"  placeholder="Enter Password" value=""/><br/>
+            <input type="submit" id="login_btn"  value="Login"/> 
+            <input type="submit" id="BacktoMain"  value="back"/>
+            <input type="submit" id="logout" value="logout" /><br/>
+            <p id="result"></p>
+        </form>
+</div>        
+</div>
+<!-- buttons to enter to login or signup -->
+<button id="logInto">Login</button>
+<button id="signUp">SignUp</button>
+<p id="mainPara"></p>
+</body>
+</html>
